@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إرسال إعجابات وزوار</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        input {
+            padding: 10px;
+            margin: 10px;
+            width: 200px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+    <script>
+        async function sendRequest(url) {
+            const response = await fetch(url);
+            if (response.ok) {
+                const data = await response.json();
+                return data;
+            } else {
+                throw new Error('فشل في الاتصال بالـ API');
+            }
+        }
+
+        async function handleAction(action) {
+            const uid = document.getElementById('uid').value;
+            const apiKey = 'mahmoud7532000'; // استبدل بمفتاحك
+            let url;
+
+            if (action === 'like') {
+                url = `https://mahmoud-aheqh0b3csgagdf4.centralus-01.azurewebsites.net/request?api_key=${apiKey}&id=${uid}&type=likes`;
+            } else if (action === 'visit') {
+                url = `https://xaz-ff-free-api-ird6.onrender.com/visut_api/${uid}`;
+            }
+
+            try {
+                const result = await sendRequest(url);
+                document.getElementById('result').innerHTML = `تم إرسال الطلب بنجاح!<br>${JSON.stringify(result)}`;
+            } catch (error) {
+                document.getElementById('result').innerHTML = `❌ ${error.message}`;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>إرسال إعجابات وزوار</h1>
+    <input type="text" id="uid" placeholder="أدخل UID" required>
+    <button onclick="handleAction('like')">إرسال إعجاب</button>
+    <button onclick="handleAction('visit')">إرسال زيارة</button>
+    <div id="result"></div>
+</body>
+</html>
